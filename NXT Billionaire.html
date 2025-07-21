@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NXT Billionaire - High Return Investments</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #10b981;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            margin: 0; /* Ensure no default body margin */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #4f46e5 0%, #10b981 100%);
+        }
+        .profit-calculator {
+            transition: all 0.3s ease;
+        }
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+        .testimonial-card {
+            background-color: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+        }
+        .mobile-menu {
+            transition: all 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+        .mobile-menu.open {
+            max-height: 500px;
+        }
+        /* New styles for payment section */
+        .payment-section {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-y: auto; /* Enable scrolling for smaller screens */
+        }
+        .payment-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+        }
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        .payment-details-section {
+            display: block; /* Default for UPI, others hidden by JS */
+        }
+
+        /* Styles for login section */
+        #login-section {
+            position: fixed; /* Use fixed to cover the whole viewport */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #4f46e5 0%, #10b981 100%);
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 2000; /* Ensure it's on top of everything */
+        }
+        #login-form-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+        }
+        /* Initially hide main content */
+        #main-content {
+            display: none; 
+        }
+
+        /* New styles for logo animation */
+        .logo-container {
+            transition: transform 0.3s ease-in-out;
+        }
+        .logo-container:hover {
+            transform: scale(1.1);
+        }
+
+        /* Styles for the new SVG logo */
+        .svg-logo {
+            width: 100%;
+            height: 100%;
+            display: block; /* Ensures it takes up the full space of its container */
+        }
+        .svg-logo .cls-1 {
+            fill: #4f46e5; /* Primary color for 'NXT' */
+        }
+        .svg-logo .cls-2 {
+            fill: #10b981; /* Secondary color for 'Billionaire' */
+        }
+        .svg-logo .cls-3 {
+            fill: #fcd34d; /* Gold/yellow for the upward arrow/symbol */
+        }
+
+        /* New styles for social media icons in footer */
+        .social-icon {
+            font-size: 1.5rem;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: #d1d5db; /* Light gray on hover */
+        }
+
+        /* Profile Section Specific Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            color: #4a5568;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            color: #2d3748;
+            transition: all 0.2s ease-in-out;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+        }
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: normal;
+            color: #2d3748;
+        }
+        .radio-group input[type="radio"] {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        /* Hide all main content sections by default, except the one shown by JS */
+        .main-content-section {
+            display: none;
+        }
+        /* Ensure the profile section is hidden by default */
+        #profile {
+            display: none;
+        }
+        /* Ensure the withdrawal section is hidden by default */
+        #withdrawal {
+            display: none;
+        }
+
+        /* Specific styles for plans within home section */
+        #investment-plans-section .plan-card {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            backdrop-filter: blur(5px); /* Optional blur effect */
+            color: #333; /* Darker text for readability on light background */
+        }
+        #investment-plans-section .plan-card h3, #investment-plans-section .plan-card .text-indigo-600 {
+            color: var(--primary); /* Use primary color for headings */
+        }
+        #investment-plans-section .plan-card .text-gray-500 {
+            color: #666;
+        }
+        #investment-plans-section .plan-card svg {
+            color: var(--secondary); /* Use secondary color for checkmarks */
+        }
+        #investment-plans-section .plan-card button {
+            background-color: var(--primary);
+        }
+        #investment-plans-section .plan-card button:hover {
+            background-color: #3730a3; /* Darker primary on hover */
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="login-section">
+        <div id="login-form-container">
+            <h2 class="text-3xl font-bold text-center mb-6 text-indigo-600">Welcome to NXT Billionaire</h2>
+            <p class="text-center text-gray-600 mb-8">Please log in to access your investment dashboard.</p>
+            
+            <form id="login-form">
+                <div class="mb-6">
+                    <label for="mobile-number" class="block text-gray-700 text-left mb-2">Mobile Number</label>
+                    <input type="tel" id="mobile-number" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g., 9876543210" required>
+                </div>
+                
+                <button type="submit" id="login-btn" class="w-full gradient-bg text-white py-3 rounded-lg font-bold hover:opacity-90 transition-all">Enter</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Header/Navigation -->
+        <header class="gradient-bg text-white sticky top-0 z-50 shadow-lg">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3 logo-container">
+                        <!-- New SVG Logo for NXT Billionaire -->
+                        <svg class="svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <g>
+                                <text x="5" y="45" font-family="Poppins, sans-serif" font-size="30" font-weight="bold" class="cls-1">NXT</text>
+                                <text x="5" y="75" font-family="Poppins, sans-serif" font-size="20" font-weight="normal" class="cls-2">Billionaire</text>
+                                <polygon points="80,30 70,50 90,50" class="cls-3"/>
+                                <rect x="79" y="35" width="2" height="15" class="cls-3" transform="rotate(45 79 35)"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-bold">NXT Billionaire</h1>
+                </div>
+                <nav class="hidden md:block">
+                    <ul class="flex space-x-8">
+                        <li><a href="#home" class="nav-link hover:text-gray-200 font-medium">Home</a></li>
+                        <!-- Updated navigation link for plans -->
+                        <li><a href="#investment-plans-section" class="nav-link hover:text-gray-200 font-medium">Investment Plans</a></li>
+                        <li><a href="#how-it-works" class="nav-link hover:text-gray-200 font-medium">How It Works</a></li>
+                        <li><a href="#testimonials" class="nav-link hover:text-gray-200 font-medium">Reviews</a></li>
+                        <li><a href="#profile" class="nav-link hover:text-gray-200 font-medium">My Profile</a></li> <!-- Added Profile Link -->
+                        <li><a href="#withdrawal" class="nav-link hover:text-gray-200 font-medium">Withdrawal</a></li> <!-- Added Withdrawal Link -->
+                        <li><a href="#contact" class="nav-link hover:text-gray-200 font-medium">Contact</a></li>
+                        <li><a href="#" id="logout-nav-btn" class="hover:text-gray-200 font-medium">Logout</a></li> <!-- Added Logout Link -->
+                    </ul>
+                </nav>
+                <button class="md:hidden text-2xl" id="menu-toggle">☰</button>
+            </div>
+            <!-- Mobile Menu -->
+            <div class="mobile-menu md:hidden bg-indigo-800" id="mobile-menu">
+                <ul class="px-4 py-2">
+                    <li><a href="#home" class="mobile-nav-link block py-2 hover:text-gray-200">Home</a></li>
+                    <!-- Updated navigation link for plans -->
+                    <li><a href="#investment-plans-section" class="mobile-nav-link block py-2 hover:text-gray-200">Investment Plans</a></li>
+                    <li><a href="#how-it-works" class="mobile-nav-link block py-2 hover:text-gray-200">How It Works</a></li>
+                    <li><a href="#testimonials" class="mobile-nav-link block py-2 hover:text-gray-200">Reviews</a></li>
+                    <li><a href="#profile" class="mobile-nav-link block py-2 hover:text-gray-200">My Profile</a></li> <!-- Added Profile Link -->
+                    <li><a href="#withdrawal" class="mobile-nav-link block py-2 hover:text-gray-200">Withdrawal</a></li> <!-- Added Withdrawal Link -->
+                    <li><a href="#contact" class="mobile-nav-link block py-2 hover:text-gray-200">Contact</a></li>
+                    <li><a href="#" id="logout-mobile-nav-btn" class="block py-2 hover:text-gray-200">Logout</a></li> <!-- Added Logout Link -->
+                </ul>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="gradient-bg text-white py-16 md:py-24 main-content-section" id="home">
+            <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">Start Earning 800% Returns in Just <span class="text-yellow-300">30 Minutes</span></h2>
+                    <p class="text-xl mb-8">Join thousands of Indians who are multiplying their money with NXT Billionaire's revolutionary investment platform.</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <!-- Changed "Invest Now" to scroll to the plans section -->
+                        <!-- ADDED nav-link CLASS HERE -->
+                        <a href="#investment-plans-section" class="nav-link bg-white text-indigo-700 hover:bg-gray-100 px-6 py-3 rounded-lg font-bold text-center">Invest Now</a>
+                        <a href="#how-it-works" class="border-2 border-white hover:bg-white hover:text-indigo-700 px-6 py-3 rounded-lg font-bold text-center">How It Works</a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <div class="absolute -top-5 -left-5 w-32 h-32 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
+                        <div class="absolute -bottom-5 -right-5 w-32 h-32 bg-emerald-300 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
+                        <!-- Updated Hero Image -->
+                        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Financial growth chart with upward trend and coins" class="relative z-10 rounded-xl shadow-2xl w-full" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- New: Investment Statistics in Home section -->
+            <div class="container mx-auto px-4 mt-16 text-center">
+                <h2 class="text-3xl font-bold mb-8 text-yellow-300">Our Impact</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white bg-opacity-20 p-6 rounded-lg shadow-lg">
+                        <p class="text-4xl font-bold text-white" id="invested-today">1,234+</p>
+                        <p class="text-gray-200 mt-2">People Invested Today</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 p-6 rounded-lg shadow-lg">
+                        <p class="text-4xl font-bold text-white" id="invested-last-month">25,000+</p>
+                        <p class="text-200 mt-2">People Invested Last Month</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 p-6 rounded-lg shadow-lg">
+                        <p class="text-4xl font-bold text-white" id="total-profits">₹8,25,62,003+</p>
+                        <p class="text-gray-200 mt-2">Total Profits Received</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Investment Plans Section (Moved from Home) -->
+        <section class="py-16 bg-gray-50 main-content-section" id="investment-plans-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-4 text-indigo-600">Our <span class="text-yellow-500">Investment Plans</span></h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Choose the perfect plan that matches your investment goals and budget.</p>
+                
+                <!-- Dynamic Plan Cards will be inserted here -->
+                <div id="dynamic-plan-cards" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Plans will be generated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Profit Calculator -->
+        <section class="py-16 bg-white main-content-section" id="calculator">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12">
+                    Calculate Your <span class="text-indigo-600">Potential Profit</span>
+                </h2>
+                <div class="max-w-3xl mx-auto bg-gray-50 rounded-2xl p-8 shadow-lg">
+                    <div class="mb-8">
+                        <label for="investment" class="block text-lg font-medium text-gray-700 mb-2">Select Investment Amount (₹)</label>
+                        <input type="range" id="investment" min="1599" max="9599" value="1599" step="100" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                        <div class="flex justify-between mt-2">
+                            <span>₹1,599</span>
+                            <span id="investment-value">₹1,599</span>
+                            <span>₹9,599</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <label for="plan" class="block text-lg font-medium text-gray-700 mb-2">Select Investment Plan</label>
+                        <select id="plan" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="8">Basic (800% Returns)</option>
+                            <option value="12">Standard (1200% Returns)</option>
+                            <option value="18">Premium (1800% Returns)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="profit-calculator bg-indigo-50 p-6 rounded-lg border border-indigo-100 mb-8">
+                        <h3 class="text-xl font-semibold mb-4 text-indigo-700">Your Estimated Earnings</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <p class="text-gray-600">Investment Amount</p>
+                                <p class="text-2xl font-bold" id="investment-display">₹1,599</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-emerald-600" id="profit-display">₹12,792</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500">*Returns are calculated based on current market conditions and plan selection.</p>
+                        </div>
+                    </div>
+                    
+                    <button id="invest-now-calculator" class="w-full gradient-bg text-white py-4 rounded-lg font-bold hover:opacity-90 transition-all">Invest Now</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="py-16 bg-white main-content-section" id="how-it-works">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-4">How It <span class="text-indigo-600">Works</span></h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Simple steps to start earning high returns in just 30 minutes</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-3xl font-bold text-indigo-600">1</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Choose Your Plan</h3>
+                        <p class="text-gray-600">Select from our range of investment plans starting from ₹1,599 to ₹9,599</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-3xl font-bold text-indigo-600">2</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Make Payment</h3>
+                        <p class="text-gray-600">Complete your investment using UPI, Net Banking, or Credit/Debit Card</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-3xl font-bold text-indigo-600">3</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Receive Profit</h3>
+                        <p class="text-gray-600">Get your returns (₹12,792 - ₹172,782) credited to your account in just 30 minutes</p>
+                    </div>
+                </div>
+                
+                <div class="mt-16 bg-indigo-50 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-center mb-6">Our <span class="text-indigo-600">Investment Strategy</span></h3>
+                    <p class="text-gray-700 mb-6 text-center max-w-3xl mx-auto">
+                        NXT Billionaire leverages cutting-edge algorithmic trading and cryptocurrency arbitrage opportunities to generate exceptional returns for our investors. Our proprietary technology identifies micro-fluctuations in global markets and capitalizes on them at lightning speed.
+                    </p>
+                    <div class="flex justify-center">
+                        <!-- Updated Investment Strategy Image -->
+                        <img src="https://images.unsplash.com/photo-1590283147001-3122f818f77e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="People collaborating on financial charts, symbolizing strategy and teamwork" class="rounded-lg shadow-md w-full max-w-2xl" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="py-16 bg-gray-50 main-content-section" id="testimonials">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-4">What <span class="text-indigo-600">Our Investors</span> Say</h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Real reviews from Indians who have multiplied their money with NXT Billionaire</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card p-6 rounded-xl shadow-md">
+                        <div class="flex items-center mb-4">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Rajesh Kumar from Mumbai, happy entrepreneur in his 30s" class="w-12 h-12 rounded-full mr-4 object-cover" />
+                            <div>
+                                <h4 class="font-bold">Rajesh Kumar</h4>
+                                <p class="text-sm text-gray-500">Mumbai • Entrepreneur</p>
+                            </div>
+                        </div>
+                        <div class="flex mb-2">
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                        <p class="text-gray-700">
+                            "The returns exceeded my expectations. I've reinvested my profits twice already and each time the payout was faster than promised!"
+                        </p>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card p-6 rounded-xl shadow-md">
+                        <div class="flex items-center mb-4">
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cfd293ae?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Priya Sharma from Delhi, satisfied professional" class="w-12 h-12 rounded-full mr-4 object-cover" />
+                            <div>
+                                <h4 class="font-bold">Priya Sharma</h4>
+                                <p class="text-sm text-gray-500">Delhi • Marketing Professional</p>
+                            </div>
+                        </div>
+                        <div class="flex mb-2">
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                        <p class="text-gray-700">
+                            "I was skeptical at first, but the process was so smooth and the returns were exactly as promised. Highly recommend for quick profits!"
+                        </p>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card p-6 rounded-xl shadow-md">
+                        <div class="flex items-center mb-4">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Anjali Singh from Bangalore, tech enthusiast" class="w-12 h-12 rounded-full mr-4 object-cover" />
+                            <div>
+                                <h4 class="font-bold">Anjali Singh</h4>
+                                <p class="text-sm text-gray-500">Bangalore • Software Engineer</p>
+                            </div>
+                        </div>
+                        <div class="flex mb-2">
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                        <p class="text-gray-700">
+                            "As a tech professional, I appreciate efficiency. NXT Billionaire delivers exactly that – fast returns with minimal effort. Fantastic platform!"
+                        </p>
+                    </div>
+
+                    <!-- Testimonial 4 -->
+                    <div class="testimonial-card p-6 rounded-xl shadow-md">
+                        <div class="flex items-center mb-4">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Amit Patel from Ahmedabad, small business owner" class="w-12 h-12 rounded-full mr-4 object-cover" />
+                            <div>
+                                <h4 class="font-bold">Amit Patel</h4>
+                                <p class="text-sm text-gray-500">Ahmedabad • Small Business Owner</p>
+                            </div>
+                        </div>
+                        <div class="flex mb-2">
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                        <p class="text-gray-700">
+                            "Running a business means every minute counts. NXT Billionaire's 30-minute payout is a game-changer. It's reliable and incredibly fast."
+                        </p>
+                    </div>
+
+                    <!-- Testimonial 5 -->
+                    <div class="testimonial-card p-6 rounded-xl shadow-md">
+                        <div class="flex items-center mb-4">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Rahul Verma from Pune, successful businessman" class="w-12 h-12 rounded-full mr-4 object-cover" />
+                            <div>
+                                <h4 class="font-bold">Rahul Verma</h4>
+                                <p class="text-sm text-gray-500">Pune • Business Owner</p>
+                            </div>
+                        </div>
+                        <div class="flex mb-2">
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                        <p class="text-gray-700">
+                            "The returns exceeded my expectations. I've reinvested my profits twice already and each time the payout was faster than promised!"
+                        </p>
+                    </div>
+
+                    <!-- Testimonial 6 -->
+                    <div class="testimonial-card p-6 rounded-xl shadow-md">
+                        <div class="flex items-center mb-4">
+                            <img src="https://images.unsplash.com/photo-1520341280432-4749d48784cd?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Deepak Singh from Chennai, retired government employee" class="w-12 h-12 rounded-full mr-4 object-cover" />
+                            <div>
+                                <h4 class="font-bold">Deepak Singh</h4>
+                                <p class="text-sm text-gray-500">Chennai • Retired</p>
+                            </div>
+                        </div>
+                        <div class="flex mb-2">
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                        <p class="text-gray-700">
+                            "I was looking for a way to supplement my pension, and NXT Billionaire provided the perfect solution. Easy to use and very rewarding."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Profile Section -->
+        <section class="py-16 bg-white main-content-section" id="profile">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-6 text-indigo-600">My Profile</h2>
+                <p class="text-center text-gray-700 mb-8">View and update your personal information.</p>
+                
+                <div class="max-w-3xl mx-auto bg-gray-50 rounded-xl p-8 shadow-lg">
+                    <div class="mb-6 p-4 bg-gray-100 rounded-lg text-center">
+                        <p class="text-lg font-semibold text-gray-800">Logged in Mobile Number:</p>
+                        <p id="display-mobile-number" class="text-2xl font-bold text-indigo-700 mt-2">Not Logged In</p>
+                    </div>
+
+                    <!-- New: Selected Investment Plan Details -->
+                    <div id="selected-plan-details" class="mb-6 p-4 bg-indigo-100 rounded-lg text-center hidden">
+                        <h3 class="text-xl font-bold text-indigo-700 mb-2">Your Selected Investment Plan</h3>
+                        <p class="text-lg text-gray-800">Plan: <span id="profile-plan-name" class="font-semibold"></span></p>
+                        <p class="text-lg text-gray-800">Investment Amount: <span id="profile-investment-amount" class="font-semibold"></span></p>
+                        <p class="text-lg text-gray-800">Estimated Profit: <span id="profile-profit-amount" class="font-semibold text-emerald-600"></span></p>
+                        <button id="make-payment-profile-btn" class="mt-4 w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium">Make Payment</button>
+                    </div>
+
+                    <form id="profile-form">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="form-group">
+                                <label for="first-name">First Name</label>
+                                <input type="text" id="first-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter your first name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name">Last Name</label>
+                                <input type="text" id="last-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter your last name" required>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="form-group">
+                                <label for="email-profile">Email Address</label>
+                                <input type="email" id="email-profile" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="age">Age</label>
+                                <select id="age" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                                    <option value="">Select Age Group</option>
+                                    <option value="18-24">18-24</option>
+                                    <option value="25-34">25-34</option>
+                                    <option value="35-44">35-44</option>
+                                    <option value="45-54">45-54</option>
+                                    <option value="55-60">55-60</option>
+                                    <option value="60+">60+</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <div class="radio-group">
+                                <label>
+                                    <input type="radio" name="gender" value="male" required> Male
+                                </label>
+                                <label>
+                                    <input type="radio" name="gender" value="female"> Female
+                                </label>
+                                <label>
+                                    <input type="radio" name="gender" value="other"> Other
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address-line1">Address Line 1</label>
+                            <input type="text" id="address-line1" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="House No., Building, Street" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address-line2">Address Line 2 (Optional)</label>
+                            <input type="text" id="address-line2" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Area, Landmark">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="City" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <input type="text" id="state" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="State" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full gradient-bg text-white py-4 rounded-lg font-bold hover:opacity-90 transition-all mt-6">Save Profile & Proceed to Withdrawal</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Withdrawal Section -->
+        <section class="py-16 bg-white main-content-section" id="withdrawal">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-6 text-indigo-600">Withdraw Your Earnings</h2>
+                <p class="text-center text-gray-700 mb-8">Choose your preferred method to receive your profits.</p>
+                
+                <div class="max-w-3xl mx-auto bg-gray-50 rounded-xl p-8 shadow-lg">
+                    <div class="mb-6 p-4 bg-indigo-100 rounded-lg text-center">
+                        <p class="text-lg font-semibold text-gray-800">Your Current Balance:</p>
+                        <p id="current-balance" class="text-3xl font-bold text-emerald-600 mt-2">₹0</p>
+                    </div>
+
+                    <form id="withdrawal-form">
+                        <div class="mb-6">
+                            <label for="withdrawal-amount" class="block text-gray-700 mb-2">Amount to Withdraw (₹)</label>
+                            <input type="number" id="withdrawal-amount" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter amount" min="1" required>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-gray-700 mb-2">Choose Withdrawal Method</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <label class="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100">
+                                    <input type="radio" name="withdrawal_method" value="bank" class="form-radio text-indigo-600" checked>
+                                    <span class="ml-3 text-gray-800 font-medium">Bank Account</span>
+                                </label>
+                                <label class="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100">
+                                    <input type="radio" name="withdrawal_method" value="upi_app" class="form-radio text-indigo-600">
+                                    <span class="ml-3 text-gray-800 font-medium">UPI App (PhonePe, Google Pay, Paytm)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="bank-details-withdrawal" class="withdrawal-details-section mb-6">
+                            <div class="form-group">
+                                <label for="account-number">Bank Account Number</label>
+                                <input type="text" id="account-number" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter your bank account number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ifsc-code">IFSC Code</label>
+                                <input type="text" id="ifsc-code" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter your bank's IFSC code" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="account-holder-name">Account Holder Name</label>
+                                <input type="text" id="account-holder-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter account holder's name" required>
+                            </div>
+                        </div>
+
+                        <div id="upi-app-details-withdrawal" class="withdrawal-details-section hidden mb-6">
+                            <div class="form-group">
+                                <label for="upi-app-number">PhonePe / Google Pay / Paytm Number</label>
+                                <input type="tel" id="upi-app-number" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter your UPI linked mobile number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="upi-app-name">UPI App Name (Optional)</label>
+                                <input type="text" id="upi-app-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g., PhonePe, Google Pay">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full gradient-bg text-white py-4 rounded-lg font-bold hover:opacity-90 transition-all">Request Withdrawal</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form -->
+        <section class="py-16 bg-white main-content-section" id="contact">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-4">Contact <span class="text-indigo-600">Us</span></h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Have questions? Our team is ready to help you start your investment journey</p>
+                
+                <div class="max-w-2xl mx-auto bg-gray-50 rounded-xl p-8 shadow-lg">
+                    <form id="contact-form">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="name" class="block text-gray-700 mb-2">Your Name</label>
+                                <input type="text" id="name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-gray-700 mb-2">Email Address</label>
+                                <input type="email" id="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <label for="subject" class="block text-gray-700 mb-2">Subject</label>
+                            <input type="text" id="subject" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 mb-2">Your Message</label>
+                            <textarea id="message" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required></textarea>
+                        </div>
+                        <button type="submit" class="w-full gradient-bg text-white py-4 rounded-lg font-bold hover:opacity-90 transition-all">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="gradient-bg text-white py-12">
+            <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3 logo-container">
+                            <!-- New SVG Logo for NXT Billionaire in Footer -->
+                            <svg class="svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <g>
+                                    <text x="5" y="45" font-family="Poppins, sans-serif" font-size="30" font-weight="bold" class="cls-1">NXT</text>
+                                    <text x="5" y="75" font-family="Poppins, sans-serif" font-size="20" font-weight="normal" class="cls-2">Billionaire</text>
+                                    <polygon points="80,30 70,50 90,50" class="cls-3"/>
+                                    <rect x="79" y="35" width="2" height="15" class="cls-3" transform="rotate(45 79 35)"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold">NXT Billionaire</h2>
+                    </div>
+                    <p class="text-gray-200 text-sm leading-relaxed">
+                        Your trusted partner for high-return investments. We leverage cutting-edge technology to deliver exceptional profits in minutes.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="nav-link hover:text-gray-200 transition-colors duration-200">Home</a></li>
+                        <!-- Updated navigation link for plans -->
+                        <li><a href="#investment-plans-section" class="nav-link hover:text-gray-200 transition-colors duration-200">Investment Plans</a></li>
+                        <li><a href="#how-it-works" class="nav-link hover:text-gray-200 transition-colors duration-200">How It Works</a></li>
+                        <li><a href="#testimonials" class="nav-link hover:text-gray-200 transition-colors duration-200">Reviews</a></li>
+                        <li><a href="#profile" class="nav-link hover:text-gray-200 transition-colors duration-200">My Profile</a></li> <!-- Added Profile Link -->
+                        <li><a href="#withdrawal" class="nav-link hover:text-gray-200 transition-colors duration-200">Withdrawal</a></li> <!-- Added Withdrawal Link -->
+                        <li><a href="#contact" class="nav-link hover:text-gray-200 transition-colors duration-200">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal & Support -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Legal & Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-gray-200 transition-colors duration-200">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-gray-200 transition-colors duration-200">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-gray-200 transition-colors duration-200">FAQ</a></li>
+                        <li><a href="#" class="hover:text-gray-200 transition-colors duration-200">Disclaimer</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact & Social -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Contact Us</h3>
+                    <p class="text-gray-200 mb-2"><i class="fas fa-envelope mr-2"></i> support@nxtbillionaire.com</p>
+                    <p class="text-gray-200 mb-2"><i class="fas fa-phone-alt mr-2"></i> +91 98765 43210</p>
+                    <p class="text-gray-200 mb-2"><i class="fab fa-instagram mr-2"></i> riya_mehra648</p>
+                    <p class="text-200 mb-4"><i class="fas fa-map-marker-alt mr-2"></i> International Tech Park, Sector 121, Bangalore, India</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm">
+                    <p>© 2023 NXT Billionaire. All rights reserved.</p>
+                </div>
+        </footer>
+
+        <!-- Payment Details Modal/Section -->
+        <div id="payment-section" class="payment-section">
+            <div class="payment-content">
+                <span class="close-button" id="close-payment-section">&times;</span>
+                <h2 class="text-3xl font-bold text-center mb-4">Complete Your <span class="text-indigo-600">Payment</span></h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Please choose your preferred payment method to complete your investment.</p>
+                
+                <form id="payment-form">
+                    <div class="mb-6">
+                        <label for="payment-amount" class="block text-gray-700 mb-2">Investment Amount</label>
+                        <input type="text" id="payment-amount" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-200 cursor-not-allowed" readonly>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Choose Payment Method</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Only UPI option is visible and checked by default -->
+                            <label class="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100">
+                                <input type="radio" name="payment_method" value="upi" class="form-radio text-indigo-600" checked>
+                                <span class="ml-3 text-gray-800 font-medium">UPI (Google Pay, PhonePe, Paytm)</span>
+                            </label>
+                            <!-- Other payment methods are removed from HTML to ensure only UPI is shown -->
+                        </div>
+                    </div>
+
+                    <div id="upi-details" class="payment-details-section mb-6">
+                        <label for="upi_id" class="block text-gray-700 mb-2">Your UPI ID</label>
+                        <input type="text" id="upi_id" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g., yourname@bankname">
+                        <p class="text-sm text-gray-500 mt-2">You will be redirected to your UPI app to complete the payment.</p>
+                    </div>
+
+                    <!-- Netbanking and Card details sections are removed from HTML -->
+                    
+                    <button type="submit" class="w-full gradient-bg text-white py-4 rounded-lg font-bold hover:opacity-90 transition-all">Proceed to Pay</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginSection = document.getElementById('login-section');
+            const mainContent = document.getElementById('main-content');
+            const loginForm = document.getElementById('login-form');
+            const mobileNumberInput = document.getElementById('mobile-number');
+            const displayMobileNumber = document.getElementById('display-mobile-number'); // For profile section
+
+            // Profile form elements
+            const profileForm = document.getElementById('profile-form');
+            const firstNameInput = document.getElementById('first-name');
+            const lastNameInput = document.getElementById('last-name');
+            const emailProfileInput = document.getElementById('email-profile'); // New
+            const ageSelect = document.getElementById('age');
+            const genderRadios = document.querySelectorAll('input[name="gender"]');
+            const addressLine1Input = document.getElementById('address-line1'); // New
+            const addressLine2Input = document.getElementById('address-line2'); // New
+            const cityInput = document.getElementById('city'); // New
+            const stateInput = document.getElementById('state'); // New
+
+            // New profile section elements for investment details
+            const selectedPlanDetailsDiv = document.getElementById('selected-plan-details');
+            const profilePlanName = document.getElementById('profile-plan-name');
+            const profileInvestmentAmount = document.getElementById('profile-investment-amount');
+            const profileProfitAmount = document.getElementById('profile-profit-amount');
+            const makePaymentProfileBtn = document.getElementById('make-payment-profile-btn');
+
+            // Withdrawal section elements
+            const withdrawalSection = document.getElementById('withdrawal');
+            const currentBalanceDisplay = document.getElementById('current-balance');
+            const withdrawalForm = document.getElementById('withdrawal-form');
+            const withdrawalAmountInput = document.getElementById('withdrawal-amount');
+            const withdrawalMethodRadios = document.querySelectorAll('input[name="withdrawal_method"]');
+            const bankDetailsWithdrawal = document.getElementById('bank-details-withdrawal');
+            const upiAppDetailsWithdrawal = document.getElementById('upi-app-details-withdrawal');
+            const accountNumberInput = document.getElementById('account-number');
+            const ifscCodeInput = document.getElementById('ifsc-code');
+            const accountHolderNameInput = document.getElementById('account-holder-name');
+            const upiAppNumberInput = document.getElementById('upi-app-number');
+            const upiAppNameInput = document.getElementById('upi-app-name');
+
+
+            // Logout buttons
+            const logoutNavBtn = document.getElementById('logout-nav-btn');
+            const logoutMobileNavBtn = document.getElementById('logout-mobile-nav-btn');
+
+            // Navigation links and sections
+            const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+            const mainContentSections = document.querySelectorAll('.main-content-section');
+            const homeSection = document.getElementById('home'); // Assuming the hero section is the default home
+
+            let currentLoggedInMobileNumber = null; // To store the mobile number of the currently logged-in user
+            let selectedInvestment = {
+                plan: '',
+                amount: 0,
+                profit: 0
+            }; // To store the selected investment plan details
+            let userBalance = 0; // Simulate user balance
+
+            // Define minimum withdrawal amounts based on investment
+            const minWithdrawalMap = {
+                1599: 13000,
+                2099: 17000,
+                2599: 21000,
+                3099: 38000,
+                3599: 44000,
+                4099: 50000,
+                4599: 56000,
+                5099: 62000,
+                5599: 68000,
+                6099: 74000,
+                6599: 80000,
+                7099: 130000,
+                7599: 140000,
+                8099: 150000,
+                8599: 160000,
+                9099: 170000,
+                9599: 180000
+            };
+
+            // --- Profile Data Management Functions ---
+            function isProfileComplete(userMobile) {
+                const profileData = JSON.parse(sessionStorage.getItem(`profile_${userMobile}`)) || {};
+                return profileData.firstName && profileData.lastName && profileData.email && profileData.age && profileData.gender && profileData.addressLine1 && profileData.city && profileData.state;
+            }
+
+            function loadProfileData(userMobile) {
+                const profileData = JSON.parse(sessionStorage.getItem(`profile_${userMobile}`)) || {};
+                if (firstNameInput) firstNameInput.value = profileData.firstName || '';
+                if (lastNameInput) lastNameInput.value = profileData.lastName || '';
+                if (emailProfileInput) emailProfileInput.value = profileData.email || ''; // New
+                if (ageSelect) ageSelect.value = profileData.age || '';
+                genderRadios.forEach(radio => {
+                    if (radio.value === profileData.gender) {
+                        radio.checked = true;
+                    } else {
+                        radio.checked = false; // Ensure others are unchecked
+                    }
+                });
+                if (addressLine1Input) addressLine1Input.value = profileData.addressLine1 || ''; // New
+                if (addressLine2Input) addressLine2Input.value = profileData.addressLine2 || ''; // New
+                if (cityInput) cityInput.value = profileData.city || ''; // New
+                if (stateInput) stateInput.value = profileData.state || ''; // New
+
+                // Load selected investment details for the user
+                const userInvestment = JSON.parse(sessionStorage.getItem(`investment_${userMobile}`)) || {};
+                if (userInvestment.plan && userInvestment.amount && userInvestment.profit) {
+                    selectedInvestment = userInvestment;
+                    displaySelectedInvestment();
+                } else {
+                    hideSelectedInvestment();
+                }
+
+                // Load user balance
+                userBalance = parseFloat(sessionStorage.getItem(`balance_${userMobile}`)) || 0;
+                if (currentBalanceDisplay) {
+                    currentBalanceDisplay.textContent = `₹${userBalance.toLocaleString()}`;
+                }
+            }
+
+            function saveProfileData(userMobile) {
+                const profileData = {
+                    firstName: firstNameInput ? firstNameInput.value : '',
+                    lastName: lastNameInput ? lastNameInput.value : '',
+                    email: emailProfileInput ? emailProfileInput.value : '', // New
+                    age: ageSelect ? ageSelect.value : '',
+                    gender: document.querySelector('input[name="gender"]:checked')?.value || '',
+                    addressLine1: addressLine1Input ? addressLine1Input.value : '', // New
+                    addressLine2: addressLine2Input ? addressLine2Input.value : '', // New
+                    city: cityInput ? cityInput.value : '', // New
+                    state: stateInput ? stateInput.value : '' // New
+                };
+                sessionStorage.setItem(`profile_${userMobile}`, JSON.stringify(profileData));
+                sessionStorage.setItem(`profile_completed_${userMobile}`, 'true'); // Mark profile as complete
+                alert('Profile saved successfully!');
+            }
+
+            function saveSelectedInvestment(userMobile) {
+                sessionStorage.setItem(`investment_${userMobile}`, JSON.stringify(selectedInvestment));
+                displaySelectedInvestment();
+            }
+
+            function displaySelectedInvestment() {
+                if (selectedPlanDetailsDiv && profilePlanName && profileInvestmentAmount && profileProfitAmount) {
+                    profilePlanName.textContent = selectedInvestment.plan;
+                    profileInvestmentAmount.textContent = `₹${selectedInvestment.amount.toLocaleString()}`;
+                    profileProfitAmount.textContent = `₹${selectedInvestment.profit.toLocaleString()}`;
+                    selectedPlanDetailsDiv.classList.remove('hidden');
+                }
+            }
+
+            function hideSelectedInvestment() {
+                if (selectedPlanDetailsDiv) {
+                    selectedPlanDetailsDiv.classList.add('hidden');
+                }
+            }
+
+            // --- Section Visibility Management ---
+            function showSection(sectionId) {
+                mainContentSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.style.display = 'block';
+                    // Always scroll to top when changing sections
+                    window.scrollTo(0, 0); 
+                }
+            }
+
+            // --- Login/Logout Logic ---
+            function handleLogin(mobileNumber) {
+                sessionStorage.setItem('isLoggedIn', 'true');
+                sessionStorage.setItem('loggedInMobileNumber', mobileNumber);
+                currentLoggedInMobileNumber = mobileNumber;
+
+                loginSection.style.display = 'none';
+                mainContent.style.display = 'block';
+                
+                if (displayMobileNumber) {
+                    displayMobileNumber.textContent = mobileNumber;
+                }
+                loadProfileData(mobileNumber); // Load profile data and investment for the logged-in user
+
+                // Check if profile is complete, if not, force to profile section
+                if (!isProfileComplete(mobileNumber)) {
+                    alert('Please complete your profile before proceeding.');
+                    showSection('profile');
+                } else {
+                    showSection('home'); // Show home section if profile is complete
+                }
+            }
+
+            function handleLogout() {
+                sessionStorage.removeItem('isLoggedIn');
+                sessionStorage.removeItem('loggedInMobileNumber');
+                sessionStorage.removeItem(`profile_completed_${currentLoggedInMobileNumber}`); // Clear profile completion status
+                sessionStorage.removeItem(`investment_${currentLoggedInMobileNumber}`); // Clear investment data
+                sessionStorage.removeItem(`balance_${currentLoggedInMobileNumber}`); // Clear balance
+                currentLoggedInMobileNumber = null;
+                selectedInvestment = { plan: '', amount: 0, profit: 0 }; // Reset selected investment
+                userBalance = 0; // Reset balance
+
+                loginSection.style.display = 'flex';
+                mainContent.style.display = 'none';
+                window.scrollTo(0, 0); // Scroll to the top (login section)
+
+                // Clear profile form fields on logout
+                if (firstNameInput) firstNameInput.value = '';
+                if (lastNameInput) lastNameInput.value = '';
+                if (emailProfileInput) emailProfileInput.value = ''; // New
+                if (ageSelect) ageSelect.value = '';
+                genderRadios.forEach(radio => radio.checked = false);
+                if (addressLine1Input) addressLine1Input.value = ''; // New
+                if (addressLine2Input) addressLine2Input.value = ''; // New
+                if (cityInput) cityInput.value = ''; // New
+                if (stateInput) stateInput.value = ''; // New
+
+                if (displayMobileNumber) displayMobileNumber.textContent = 'Not Logged In';
+                hideSelectedInvestment(); // Hide investment details on logout
+                if (currentBalanceDisplay) currentBalanceDisplay.textContent = '₹0'; // Reset balance display
+            }
+
+            // Check initial login state
+            if (sessionStorage.getItem('isLoggedIn') === 'true' && sessionStorage.getItem('loggedInMobileNumber')) {
+                handleLogin(sessionStorage.getItem('loggedInMobileNumber'));
+            } else {
+                loginSection.style.display = 'flex';
+                mainContent.style.display = 'none';
+            }
+
+            // Login form submission
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const mobileNumber = mobileNumberInput.value;
+
+                    if (mobileNumber.length === 10 && /^\d+$/.test(mobileNumber)) {
+                        alert(`Mobile number ${mobileNumber} submitted. Accessing dashboard.`);
+                        handleLogin(mobileNumber);
+                    } else {
+                        alert('Please enter a valid 10-digit mobile number.');
+                    }
+                });
+            }
+
+            // Logout button event listeners
+            if (logoutNavBtn) {
+                logoutNavBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    handleLogout();
+                });
+            }
+            if (logoutMobileNavBtn) {
+                logoutMobileNavBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    handleLogout();
+                });
+            }
+
+            // --- Navigation Link Event Listeners ---
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1); // Get section ID from href
+
+                    if (targetId === 'logout') { // Handle logout link separately
+                        handleLogout();
+                        return;
+                    }
+
+                    // IMPORTANT: Profile completion check
+                    if (currentLoggedInMobileNumber && !isProfileComplete(currentLoggedInMobileNumber) && targetId !== 'profile') {
+                        alert('Please complete your profile before navigating to other sections.');
+                        showSection('profile');
+                        return;
+                    }
+                    showSection(targetId);
+                    // Close mobile menu if open
+                    if (mobileMenu.classList.contains('open')) {
+                        mobileMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (menuToggle && mobileMenu) {
+                menuToggle.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('open');
+                });
+            }
+
+            // Profit calculator functionality
+            const investmentSlider = document.getElementById('investment');
+            const investmentValue = document.getElementById('investment-value');
+            const investmentDisplay = document.getElementById('investment-display');
+            const profitDisplay = document.getElementById('profit-display');
+            const planSelect = document.getElementById('plan');
+            const investNowCalculatorBtn = document.getElementById('invest-now-calculator');
+
+            function updateCalculator() {
+                if (!investmentSlider || !planSelect) return; // Ensure elements exist
+                const investment = parseInt(investmentSlider.value);
+                const profitMultiplier = parseInt(planSelect.value);
+                const profit = investment * profitMultiplier;
+                
+                if (investmentValue) investmentValue.textContent = `₹${investment.toLocaleString()}`;
+                if (investmentDisplay) investmentDisplay.textContent = `₹${investment.toLocaleString()}`;
+                if (profitDisplay) profitDisplay.textContent = `₹${profit.toLocaleString()}`;
+            }
+
+            if (investmentSlider && planSelect) {
+                investmentSlider.addEventListener('input', updateCalculator);
+                planSelect.addEventListener('change', updateCalculator);
+                updateCalculator(); // Initialize calculator
+            }
+
+            // Payment Section Logic
+            const paymentSection = document.getElementById('payment-section');
+            const paymentAmountInput = document.getElementById('payment-amount');
+            const closePaymentSectionBtn = document.getElementById('close-payment-section');
+
+            function openPaymentSection(amount) {
+                if (currentLoggedInMobileNumber && !isProfileComplete(currentLoggedInMobileNumber)) {
+                    alert('Please complete your profile before making an investment.');
+                    showSection('profile');
+                    return;
+                }
+
+                if (paymentAmountInput && paymentSection) {
+                    paymentAmountInput.value = `₹${amount.toLocaleString()}`;
+                    paymentSection.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            function closePaymentSection() {
+                if (paymentSection) {
+                    paymentSection.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            }
+
+            if (closePaymentSectionBtn) {
+                closePaymentSectionBtn.addEventListener('click', closePaymentSection);
+            }
+            if (paymentSection) {
+                paymentSection.addEventListener('click', (e) => {
+                    if (e.target === paymentSection) {
+                        closePaymentSection();
+                    }
+                });
+            }
+
+            // --- Dynamic Plan Generation ---
+            const dynamicPlanCardsContainer = document.getElementById('dynamic-plan-cards');
+            const minInvestment = 1599;
+            const maxInvestment = 9599;
+            const investmentStep = 500; // You can adjust this step for more or fewer plans
+
+            function generatePlanCards() {
+                if (!dynamicPlanCardsContainer) return;
+                dynamicPlanCardsContainer.innerHTML = ''; // Clear existing plans
+
+                for (let amount = minInvestment; amount <= maxInvestment; amount += investmentStep) {
+                    let profitPercentage;
+                    let planName;
+                    let features = ['30 Minute Payout', '24/7 Support'];
+
+                    if (amount < 3000) {
+                        profitPercentage = 800; // Basic
+                        planName = 'Basic Plan';
+                    } else if (amount < 7000) {
+                        profitPercentage = 1200; // Standard
+                        planName = 'Standard Plan';
+                        features.push('Priority Support');
+                    } else {
+                        profitPercentage = 1800; // Premium
+                        planName = 'Premium Plan';
+                        features.push('VIP Support', 'Personal Wealth Advisor', 'Exclusive Opportunities');
+                    }
+
+                    const profit = Math.round(amount * (profitPercentage / 100));
+
+                    const planCardHtml = `
+                        <div class="plan-card bg-white rounded-xl p-8 shadow-md border border-gray-100 transition-all duration-300">
+                            <div class="text-center mb-6">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-2">${planName}</h3>
+                                <div class="text-4xl font-extrabold text-indigo-600">₹${amount.toLocaleString()}</div>
+                                <p class="text-gray-500 mt-2">Investment</p>
+                            </div>
+                            <div class="mb-6">
+                                <div class="flex items-center mb-2">
+                                    <div class="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center mr-2">
+                                        <svg class="w-3 h-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                    <span>₹${profit.toLocaleString()} Profit (${profitPercentage}%)</span>
+                                </div>
+                                ${features.map(feature => `
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center mr-2">
+                                            <svg class="w-3 h-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        </div>
+                                        <span>${feature}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium select-plan" data-plan="${planName}" data-amount="${amount}" data-profit="${profit}">Select Plan</button>
+                        </div>
+                    `;
+                    dynamicPlanCardsContainer.insertAdjacentHTML('beforeend', planCardHtml);
+                }
+                // Re-attach event listeners to newly created buttons
+                attachSelectPlanListeners();
+            }
+
+            function attachSelectPlanListeners() {
+                document.querySelectorAll('.select-plan').forEach(button => {
+                    button.removeEventListener('click', handleSelectPlanClick); // Remove old listeners to prevent duplicates
+                    button.addEventListener('click', handleSelectPlanClick);
+                });
+            }
+
+            function handleSelectPlanClick() {
+                if (currentLoggedInMobileNumber && !isProfileComplete(currentLoggedInMobileNumber)) {
+                    alert('Please complete your profile before selecting an investment plan.');
+                    showSection('profile');
+                    return;
+                }
+
+                const planName = this.getAttribute('data-plan');
+                const amount = parseInt(this.getAttribute('data-amount'));
+                const profit = parseInt(this.getAttribute('data-profit'));
+
+                selectedInvestment = {
+                    plan: planName,
+                    amount: amount,
+                    profit: profit
+                };
+                saveSelectedInvestment(currentLoggedInMobileNumber); // Save to session storage
+
+                alert(`You have selected the ${selectedInvestment.plan} with an investment of ₹${selectedInvestment.amount.toLocaleString()} and estimated profit of ₹${selectedInvestment.profit.toLocaleString()}. Please complete your profile details or proceed to payment.`);
+                showSection('profile'); // Redirect to profile section
+            }
+
+            // Call generatePlanCards on DOMContentLoaded
+            generatePlanCards();
+
+            // Invest now button from calculator - MODIFIED TO REDIRECT TO PROFILE
+            if (investNowCalculatorBtn) {
+                investNowCalculatorBtn.addEventListener('click', function() {
+                    if (currentLoggedInMobileNumber && !isProfileComplete(currentLoggedInMobileNumber)) {
+                        alert('Please complete your profile before selecting an investment plan.');
+                        showSection('profile');
+                        return;
+                    }
+
+                    const investment = parseInt(investmentSlider.value);
+                    const selectedPlanOption = planSelect.options[planSelect.selectedIndex];
+                    const planName = selectedPlanOption.text.split(' ')[0]; // e.g., "Basic" from "Basic (800% Returns)"
+                    const profitMultiplier = parseInt(planSelect.value);
+                    const profit = investment * profitMultiplier;
+
+                    selectedInvestment = {
+                        plan: planName + ' Plan',
+                        amount: investment,
+                        profit: profit
+                    };
+                    saveSelectedInvestment(currentLoggedInMobileNumber); // Save to session storage
+
+                    alert(`You have selected an investment of ₹${selectedInvestment.amount.toLocaleString()} with estimated profit of ₹${selectedInvestment.profit.toLocaleString()}. Please complete your profile details or proceed to payment.`);
+                    showSection('profile'); // Redirect to profile section
+                });
+            }
+
+            // Make Payment button in Profile section
+            if (makePaymentProfileBtn) {
+                makePaymentProfileBtn.addEventListener('click', () => {
+                    if (selectedInvestment.amount > 0) {
+                        openPaymentSection(selectedInvestment.amount);
+                    } else {
+                        alert('No investment plan selected. Please select a plan first.');
+                        showSection('investment-plans-section'); // Redirect to plans section
+                    }
+                });
+            }
+
+            // Contact form submission
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    if (currentLoggedInMobileNumber && !isProfileComplete(currentLoggedInMobileNumber)) {
+                        alert('Please complete your profile before sending a message.');
+                        showSection('profile');
+                        return;
+                    }
+                    alert('Thank you for your message! We will contact you soon.');
+                    this.reset();
+                });
+            }
+
+            // Payment form logic within the modal
+            const paymentForm = document.getElementById('payment-form');
+
+            if (paymentForm) {
+                paymentForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const selectedMethod = 'upi'; 
+                    const investmentAmount = parseFloat(paymentAmountInput.value.replace('₹', '').replace(/,/g, ''));
+                    const upiIdInput = document.getElementById('upi_id');
+                    const upiId = upiIdInput ? upiIdInput.value : '';
+
+                    if (selectedMethod === 'upi') {
+                        if (!upiId) {
+                            alert('Please enter your UPI ID.');
+                            return;
+                        }
+                        
+                        const minWithdrawal = minWithdrawalMap[investmentAmount];
+                        if (minWithdrawal) {
+                            userBalance = minWithdrawal; // Set user balance to the minimum withdrawal amount
+                            sessionStorage.setItem(`balance_${currentLoggedInMobileNumber}`, userBalance);
+                            alert(`Payment of ₹${investmentAmount.toLocaleString()} initiated via UPI. Your minimum withdrawal amount is ₹${minWithdrawal.toLocaleString()}. You are not able to withdraw your money. Please contact our Instagram page: riya_mehra648`);
+                        } else {
+                            // Fallback if investment amount not in map, though it should be covered by dynamic plans
+                            userBalance += selectedInvestment.profit;
+                            sessionStorage.setItem(`balance_${currentLoggedInMobileNumber}`, userBalance);
+                            alert(`Payment of ₹${investmentAmount.toLocaleString()} initiated via UPI. Assuming success for demo purposes. ₹${selectedInvestment.profit.toLocaleString()} has been added to your balance! Your new balance is ₹${userBalance.toLocaleString()}.`);
+                        }
+
+                        sessionStorage.removeItem(`investment_${currentLoggedInMobileNumber}`); // Clear investment after "payment"
+                        selectedInvestment = { plan: '', amount: 0, profit: 0 }; // Reset local state
+                        hideSelectedInvestment(); // Hide investment details in profile
+                        closePaymentSection();
+                        showSection('home'); // Redirect to home or a success page
+                        loadProfileData(currentLoggedInMobileNumber); // Update balance display
+                    } 
+                });
+            }
+
+            // Profile form submission
+            if (profileForm) {
+                profileForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (currentLoggedInMobileNumber) {
+                        // Check if all required fields are filled
+                        const isFirstNameFilled = firstNameInput.value.trim() !== '';
+                        const isLastNameFilled = lastNameInput.value.trim() !== '';
+                        const isEmailFilled = emailProfileInput.value.trim() !== ''; // New
+                        const isAgeSelected = ageSelect.value.trim() !== '';
+                        const isGenderSelected = document.querySelector('input[name="gender"]:checked') !== null;
+                        const isAddressLine1Filled = addressLine1Input.value.trim() !== ''; // New
+                        const isAddressLine2Filled = addressLine2Input.value.trim() !== ''; // New
+                        const isCityFilled = cityInput.value.trim() !== ''; // New
+                        const isStateFilled = stateInput.value.trim() !== ''; // New
+
+                        if (isFirstNameFilled && isLastNameFilled && isEmailFilled && isAgeSelected && isGenderSelected && isAddressLine1Filled && isCityFilled && isStateFilled) {
+                            saveProfileData(currentLoggedInMobileNumber);
+                            // After saving, redirect to withdrawal section
+                            showSection('withdrawal'); 
+                        } else {
+                            alert('Please fill in all required profile fields (First Name, Last Name, Email, Age, Gender, Address Line 1, City, State).');
+                        }
+                    } else {
+                        alert('Error: Not logged in. Please log in to save your profile.');
+                        handleLogout(); // Redirect to login
+                    }
+                });
+            }
+
+            // Withdrawal form logic
+            function showWithdrawalDetails(method) {
+                if (bankDetailsWithdrawal) bankDetailsWithdrawal.classList.add('hidden');
+                if (upiAppDetailsWithdrawal) upiAppDetailsWithdrawal.classList.add('hidden');
+
+                if (method === 'bank' && bankDetailsWithdrawal) {
+                    bankDetailsWithdrawal.classList.remove('hidden');
+                } else if (method === 'upi_app' && upiAppDetailsWithdrawal) {
+                    upiAppDetailsWithdrawal.classList.remove('hidden');
+                }
+            }
+
+            withdrawalMethodRadios.forEach(radio => {
+                radio.addEventListener('change', (event) => {
+                    showWithdrawalDetails(event.target.value);
+                });
+            });
+
+            // Initialize with default selected withdrawal method (Bank Account)
+            showWithdrawalDetails('bank');
+
+            if (withdrawalForm) {
+                withdrawalForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const amountToWithdraw = parseFloat(withdrawalAmountInput.value);
+                    const selectedWithdrawalMethod = document.querySelector('input[name="withdrawal_method"]:checked').value;
+
+                    if (amountToWithdraw <= 0 || isNaN(amountToWithdraw)) {
+                        alert('Please enter a valid amount to withdraw.');
+                        return;
+                    }
+
+                    if (amountToWithdraw < userBalance) { // Changed condition to prevent withdrawal if amount is less than current balance
+                        alert(`You are not able to withdraw your money. Please contact our Instagram page: riya_mehra648`);
+                        return;
+                    }
+
+                    let withdrawalDetailsValid = true;
+                    if (selectedWithdrawalMethod === 'bank') {
+                        if (!accountNumberInput.value.trim() || !ifscCodeInput.value.trim() || !accountHolderNameInput.value.trim()) {
+                            alert('Please fill in all bank account details.');
+                            withdrawalDetailsValid = false;
+                        }
+                    } else if (selectedWithdrawalMethod === 'upi_app') {
+                        if (!upiAppNumberInput.value.trim()) {
+                            alert('Please enter your UPI linked mobile number.');
+                            withdrawalDetailsValid = false;
+                        }
+                    }
+
+                    if (!withdrawalDetailsValid) {
+                        return;
+                    }
+
+                    // Simulate withdrawal success
+                    userBalance -= amountToWithdraw;
+                    sessionStorage.setItem(`balance_${currentLoggedInMobileNumber}`, userBalance);
+                    currentBalanceDisplay.textContent = `₹${userBalance.toLocaleString()}`;
+
+                    // Updated alert message
+                    alert('Withdrawal request submitted successfully!'); 
+                    withdrawalForm.reset(); // Clear form fields
+                    showSection('home'); // Redirect to home or a success page
+                });
+            }
+
+            // --- Dynamic Number Update for "Our Impact" section ---
+            const investedTodayElem = document.getElementById('invested-today');
+            const investedLastMonthElem = document.getElementById('invested-last-month');
+            const totalProfitsElem = document.getElementById('total-profits');
+
+            let currentInvestedToday = 1234;
+            let currentInvestedLastMonth = 25000;
+            let currentTotalProfits = 82562003;
+
+            function updateImpactNumbers() {
+                // Increment numbers
+                currentInvestedToday += Math.floor(Math.random() * 5) + 1; // Add 1-5 new investors today
+                currentInvestedLastMonth += Math.floor(Math.random() * 20) + 5; // Add 5-25 new investors last month
+                currentTotalProfits += Math.floor(Math.random() * 50000) + 10000; // Add ₹10,000 - ₹60,000 to profits
+
+                // Update display
+                if (investedTodayElem) {
+                    investedTodayElem.textContent = currentInvestedToday.toLocaleString() + '+';
+                }
+                if (investedLastMonthElem) {
+                    investedLastMonthElem.textContent = currentInvestedLastMonth.toLocaleString() + '+';
+                }
+                if (totalProfitsElem) {
+                    totalProfitsElem.textContent = '₹' + currentTotalProfits.toLocaleString() + '+';
+                }
+            }
+
+            // Update numbers every 3 seconds (adjust as needed)
+            setInterval(updateImpactNumbers, 3000);
+
+            // Initial call to set numbers on load
+            updateImpactNumbers();
+        });
+    </script>
+</body>
+</html>
